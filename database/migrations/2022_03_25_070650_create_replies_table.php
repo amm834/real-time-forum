@@ -18,7 +18,6 @@ return new class extends Migration {
 
             // foreign key
             $table->unsignedBigInteger('user_id');
-            // delete comment on deleting of question
             $table->foreignId('question_id')->constrained()->cascadeOnDelete();
 
             $table->timestamps();
