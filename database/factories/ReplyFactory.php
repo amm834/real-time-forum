@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Question;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +19,9 @@ class ReplyFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'body' => $this->faker->sentence,
+            'user_id' => fn() => User::all()->random(),
+            'question_id' => fn() => Question::all()->random()
         ];
     }
 }
