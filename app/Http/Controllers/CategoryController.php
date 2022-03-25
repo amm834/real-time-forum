@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Response;
 
 class CategoryController extends Controller
@@ -29,6 +30,8 @@ class CategoryController extends Controller
         $data = $request->validate([
             'name' => 'required'
         ]);
+        $data['slug'] = Str::slug($request->name);
+
         Category::create($data);
         return response()->json([
             'message' => 'Category create success'
@@ -43,7 +46,7 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        //
+        return $category;
     }
 
     /**
@@ -51,11 +54,20 @@ class CategoryController extends Controller
      *
      * @param \Illuminate\Http\Request $request
      * @param \App\Models\Category $category
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
      */
     public function update(Request $request, Category $category)
     {
-        //
+        $data = $request->validate([
+            'name' => 'required'
+        ]);
+        $data['slug'] = Str::slug($request->name);
+        $result = $category->update($data);
+        if ($result) {
+            return \response()->json([
+                'message' => 'Category updated successfully'
+            ], Response::HTTP_ACCEPTED);
+        }
     }
 
     /**
@@ -66,6 +78,7 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        //
+        $category->delete();
+        return response()->noContent();
     }
 }
