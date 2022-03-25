@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\QuestionResource;
 use App\Models\Question;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class QuestionController extends Controller
 {
@@ -48,14 +49,14 @@ class QuestionController extends Controller
      *
      * @param \Illuminate\Http\Request $request
      * @param \App\Models\Question $question
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(Request $request, Question $question)
     {
         $question->update($request->all());
         return response()->json([
             'message' => 'Question update success',
-        ], 201);
+        ], Response::HTTP_ACCEPTED);
     }
 
     /**
