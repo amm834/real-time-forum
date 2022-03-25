@@ -14,18 +14,21 @@ class QuestionController extends Controller
      */
     public function index()
     {
-        return Question::orderById('desc')->get();
+        return Question::orderByDesc('id')->get();
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
-        //
+        Question::create($request->all());
+        return response()->json([
+            'message' => 'Question created succfully'
+        ], 201);
     }
 
     /**
