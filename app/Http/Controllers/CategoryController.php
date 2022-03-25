@@ -64,7 +64,7 @@ class CategoryController extends Controller
         $data['slug'] = Str::slug($request->name);
         $result = $category->update($data);
         if ($result) {
-            return \response()->json([
+            return response()->json([
                 'message' => 'Category updated successfully'
             ], Response::HTTP_ACCEPTED);
         }
