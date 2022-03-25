@@ -12,15 +12,10 @@ return new class extends Migration {
      */
     public function up()
     {
-        Schema::create('replies', function (Blueprint $table) {
+        Schema::create('likes', function (Blueprint $table) {
             $table->id();
-            $table->text('body');
-
-            // foreign key
             $table->unsignedBigInteger('user_id');
-            // delete comment on deleting of question
-            $table->foreignId('question_id')->constrained()->cascadeOnDelete();
-
+            $table->unsignedBigInteger('reply_id');
             $table->timestamps();
         });
     }
@@ -32,6 +27,6 @@ return new class extends Migration {
      */
     public function down()
     {
-        Schema::dropIfExists('replies');
+        Schema::dropIfExists('likes');
     }
 };
