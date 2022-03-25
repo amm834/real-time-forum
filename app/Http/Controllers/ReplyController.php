@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Question;
 use App\Models\Reply;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class ReplyController extends Controller
 {
@@ -24,9 +25,15 @@ class ReplyController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Question $question, Request $request)
     {
-        //
+        $data = $request->validate([
+            'body' => 'required',
+            'user_id' => 'required',
+            'question_id' => 'required'
+        ]);
+        $question = $question->replies()->create($data);
+        return response($question, Response::HTTP_CREATED);
     }
 
     /**
@@ -45,11 +52,18 @@ class ReplyController extends Controller
      *
      * @param \Illuminate\Http\Request $request
      * @param \App\Models\Reply $reply
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function update(Request $request, Reply $reply)
+    public function update(Question $question, Request $request, Reply $reply)
     {
-        //
+        $data = $request->validate([
+            'body' => 'required',
+            'user_id' => 'required',
+        ]);
+        $reply->update($data);
+        return response()->json([
+            'message' => 'Reply updated successfully'
+        ]);
     }
 
     /**
@@ -58,8 +72,9 @@ class ReplyController extends Controller
      * @param \App\Models\Reply $reply
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Reply $reply)
+    public function destroy(Question $question, Reply $reply)
     {
-        //
+        $reply->delete();
+        return response()->noContent();
     }
 }
