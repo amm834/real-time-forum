@@ -14,7 +14,7 @@ class QuestionController extends Controller
      */
     public function index()
     {
-        return Question::orderByDesc('id')->get();
+        return Question::orderById('desc')->get();
     }
 
     /**
@@ -36,7 +36,7 @@ class QuestionController extends Controller
      */
     public function show(Question $question)
     {
-        //
+        return $question;
     }
 
     /**
