@@ -9,10 +9,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 class AuthController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth:sanctum')->except(['register', 'login']);
-    }
 
     public function register(Request $request)
     {
@@ -37,8 +33,13 @@ class AuthController extends Controller
         if (auth()->attempt($credentials)) {
             $token = auth()->user()->createToken('access_token')->plainTextToken;
             return response()->json([
-                'access_token' => $token
+                'access_token' => $token,
+                'user' => auth()->user()
             ]);
+        } else {
+            return response()->json([
+                'message' => 'Unauthenticated'
+            ], Response::HTTP_FORBIDDEN);
         }
     }
 
