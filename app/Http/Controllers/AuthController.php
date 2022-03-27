@@ -9,13 +9,17 @@ use Symfony\Component\HttpFoundation\Response;
 
 class AuthController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:sanctum')->only('logout');
+    }
 
     public function register(Request $request)
     {
         $data = $request->validate([
             'name' => 'required',
             'email' => 'required|unique:users',
-            'password' => 'required|min:6|max:15',
+            'password' => 'required|min:6|max:15|confirmed',
         ]);
 
         $data['password'] = Hash::make($data['password']);
@@ -36,11 +40,11 @@ class AuthController extends Controller
                 'access_token' => $token,
                 'user' => auth()->user()
             ]);
-        } else {
-            return response()->json([
-                'message' => 'Unauthenticated'
-            ], Response::HTTP_FORBIDDEN);
         }
+
+        return response()->json([
+            'message' => 'Unauthenticated'
+        ], Response::HTTP_UNAUTHORIZED);
     }
 
     public function logout()

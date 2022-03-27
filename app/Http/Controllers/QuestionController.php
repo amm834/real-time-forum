@@ -9,10 +9,16 @@ use Symfony\Component\HttpFoundation\Response;
 
 class QuestionController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth:sanctum')->except(['index', 'some']);
+    }
+
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function index()
     {
@@ -27,9 +33,19 @@ class QuestionController extends Controller
      */
     public function store(Request $request)
     {
-        Question::create($request->all());
+        $data = $request->validate([
+            'title' => 'required',
+            'category_id' => 'required',
+            'body' => 'required'
+        ]);
+        $data['slug'] = Str::slug($data['title'], '-');
+        $data['user_id'] = $request->user()->id;
+
+
+        Question::create($data);
+
         return response()->json([
-            'message' => 'Question created succfully'
+            'message' => 'Question created successfully'
         ], 201);
     }
 

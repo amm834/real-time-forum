@@ -10,7 +10,7 @@ class Question extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['title','slug', 'body', 'user_id', 'category_id'];
+    protected $fillable = ['title', 'slug', 'body', 'user_id', 'category_id'];
 
     public function getRouteKeyName()
     {
@@ -23,7 +23,7 @@ class Question extends Model
     protected function path(): Attribute
     {
         return Attribute::make(
-            get: fn() => asset("/api/question/$this->slug"),
+            get: fn() => "/question/$this->slug",
         );
     }
 
@@ -40,5 +40,5 @@ class Question extends Model
     public function replies()
     {
         return $this->hasMany(Reply::class);
-  }
+    }
 }
