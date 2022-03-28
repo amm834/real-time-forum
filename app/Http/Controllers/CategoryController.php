@@ -62,7 +62,7 @@ class CategoryController extends Controller
         $data = $request->validate([
             'name' => 'required'
         ]);
-        $data['slug'] = Str::slug($request->name);
+        $data['slug'] = Str::slug($data['name']);
         $result = $category->update($data);
         if ($result) {
             return response()->json([

@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
         Question::factory(10)->create();
         // hasLikes is magic method
         Reply::factory(50)
-            ->hasLikes(10)
+            ->hasLikes(50)
             ->create();
     }
 }

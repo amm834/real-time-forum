@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\QuestionResource;
 use App\Models\Question;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Response;
 
 class QuestionController extends Controller
@@ -42,7 +43,7 @@ class QuestionController extends Controller
         $data['user_id'] = $request->user()->id;
 
 
-        Question::create($data);
+        auth()->user()->questions()->create($data);
 
         return response()->json([
             'message' => 'Question created successfully'

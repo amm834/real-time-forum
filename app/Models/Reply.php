@@ -8,7 +8,16 @@ use Illuminate\Database\Eloquent\Model;
 class Reply extends Model
 {
     use HasFactory;
-    protected $fillable = ['body','user_id','question_id'];
+
+    protected static function boot()
+    {
+        parent::boot();
+        static::creating(function ($reply) {
+            $reply->user_id = auth()->id();
+        });
+    }
+
+    protected $fillable = ['body', 'user_id', 'question_id'];
 
     public function user()
     {

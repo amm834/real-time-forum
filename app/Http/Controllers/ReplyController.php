@@ -17,7 +17,7 @@ class ReplyController extends Controller
      */
     public function index(Question $question)
     {
-        return ReplyResource::collection($question->replies()->get());
+        return ReplyResource::collection($question->replies()->latest()->get());
     }
 
     /**
@@ -30,9 +30,8 @@ class ReplyController extends Controller
     {
         $data = $request->validate([
             'body' => 'required',
-            'user_id' => 'required',
-            'question_id' => 'required'
         ]);
+        $data['question_id'] = $question->id;
         $question = $question->replies()->create($data);
         return response($question, Response::HTTP_CREATED);
     }
