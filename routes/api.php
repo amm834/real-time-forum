@@ -19,3 +19,9 @@ Route::apiResource('/questions/{question}/replies', ReplyController::class);
 
 Route::post('/like/{reply}', [LikeController::class, 'like']);
 Route::delete('/like/{reply}', [LikeController::class, 'unlike']);
+
+
+Route::get('/notis', fn() => [
+    'read' => auth()->user()->readNotifications(),
+    'unread' => auth()->user()->unReadNotifications()
+]);
