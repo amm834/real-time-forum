@@ -10,7 +10,7 @@ class LikeController extends Controller
     {
         // auth()->id
         $reply->likes()->create([
-            'user_id' => 1,
+            'user_id' => auth()->id(),
         ]);
         return response()->json([
             'message' => 'You liked successfully'
@@ -19,7 +19,7 @@ class LikeController extends Controller
 
     public function unlike(Reply $reply)
     {
-        $reply->likes()->where('user_id', 1)->first()->delete();
+        $reply->likes()->where('user_id', auth()->id())->first()->delete();
         return response()->noContent();
     }
 }
